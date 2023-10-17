@@ -26,3 +26,29 @@ def get_all_address(request):
     address = Address.objects.all()
     serializer = AddressSerializer(address, many=True)
     return Response(serializer.data)
+
+@api_view(["POST"])
+def get_location(request):
+
+    data = request.data
+
+    position_x = data['x']
+    position_y = data['y']
+
+    d_max = abs(position_x - position_y)
+
+    address = Address.objects.all()
+    serializer = AddressSerializer(address, many=True)
+    serializer = serializer.data
+
+    lista_resultado = []
+    
+    for objeto in serializer:
+        lista = [objeto['name']]
+        x = abs(objeto['x'] - position_x)
+        y =abs(objeto['y'] - position_y)
+        soma_x_y = x + y
+        if soma_x_y <= d_max:
+            lista_resultado.append(lista)
+   
+    return Response(f'{lista_resultado}')
