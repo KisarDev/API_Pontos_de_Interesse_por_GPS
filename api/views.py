@@ -26,23 +26,3 @@ def get_all_address(request):
     address = Address.objects.all()
     serializer = AddressSerializer(address, many=True)
     return Response(serializer.data)
-
-def tratamento(data_x, data_y, point_x, point_y):
-    data_x = data_x
-    data_y = data_y
-    point_x = point_x
-    point_y = point_y
-    dmax = point_x - point_y
-    dist_x = data_x - point_x
-    dist_y = data_y - point_y
-    sum_dist = dist_x + dist_y
-    if sum_dist <= dmax:
-        print("passou")
-    else:
-        print("não passou")
-
-@api_view(['POST'])
-def verify(request):
-    if request.method == "GET":
-        raise APIException('Não tem permissões para GET', 500)
-    pass
