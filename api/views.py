@@ -1,12 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, schema
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from django.core.serializers import serialize
 from api.models import Address
-from api.serializers import AddressSerializer
-import json
+from api.serializers import AddressSchema, AddressSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Schema
 # Create your views here.
 
 @api_view(['POST'])
@@ -27,8 +28,10 @@ def get_all_address(request):
     serializer = AddressSerializer(address, many=True)
     return Response(serializer.data)
 
-@api_view(["POST"])
-def get_location(request):
+
+@api_view(['POST'])
+@schema(AddressSchema)
+def get_location(request, parameter= AddressSerializer):
 
     data = request.data
 
